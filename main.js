@@ -8,7 +8,7 @@ let lastPage = 1;
 
 // setupUI();
 getPosts();
-function loadingDATA(){
+function loadingDATA() {
   window.onscroll = function () {
     if (
       window.innerHeight + Math.ceil(window.pageYOffset) >=
@@ -21,9 +21,8 @@ function loadingDATA(){
   };
 }
 
-
 function getPosts(page = 1) {
-  loaderFunc(true)
+  loaderFunc(true);
   axios
     .get(`${baseUrl}/posts?limit=6&page=${page}`)
     .then(function (response) {
@@ -42,15 +41,15 @@ function getPosts(page = 1) {
         if (usere.title != null) {
           titlo = usere.title;
         }
-        let user=getUser()
-        let isMypost=user!=null&& user.id==usere.author.id
-        let buttonContent=``
-        if(isMypost){
-            buttonContent= `
+        let user = getUser();
+        let isMypost = user != null && user.id == usere.author.id;
+        let buttonContent = ``;
+        if (isMypost) {
+          buttonContent = `
             <button class="btn btn-danger w-2 p-2 mr-3" style="float:right;margin-right:4px" onclick="deletePost(${usere.id})">Delete</button>
-             <button class="btn btn-secondary w-2 p-2 mr-3" style="float:right;margin-right:4px" onclick="editPost(${usere.id})">Edit</button>`
-        }else{
-            buttonContent=``  
+             <button class="btn btn-secondary w-2 p-2 mr-3" style="float:right;margin-right:4px" onclick="editPost(${usere.id})">Edit</button>`;
+        } else {
+          buttonContent = ``;
         }
         //content
         var content = `
@@ -61,9 +60,7 @@ function getPosts(page = 1) {
                  </div>
                  
                  <div class="card-body "onclick="postClicked(${usere.id})">
-                 <img class="w-100 " style="border-color:gray; border-style:solid; border-radius:10px;" src="${
-                   usere.image
-                 }" id="image" alt="">
+                 <img class="w-100 " style="border-color:gray; border-style:solid; border-radius:10px;" src="${usere.image}" id="image" alt="">
                  <h6 id="created" class="p-2">
                      ${usere.created_at}
                  </h6>
@@ -83,26 +80,27 @@ function getPosts(page = 1) {
              </div>
              `;
         everything.innerHTML += content;
-        loadingDATA()
+        loadingDATA();
       }
     })
-    .catch((error)=>{
-      showAlert(`${error.response.data.message}`, `danger`)
-  }).finally(()=>{
-      loaderFunc(false)
-  })
+    .catch((error) => {
+      showAlert(`${error.response.data.message}`, `danger`);
+    })
+    .finally(() => {
+      loaderFunc(false);
+    });
 }
 //end get posta
 function postClicked(user_Id) {
   location.href = `second.html?postId=${user_Id}`;
 }
-function userClicked(author_id){
-  location.href=`profile.html?postID=${author_id}`
+function userClicked(author_id) {
+  location.href = `profile.html?postID=${author_id}`;
 }
 function addPostBtn() {
-    let postid=document.getElementById("postID").value
-    let isCreate=postid==null || postid == ""
-    
+  let postid = document.getElementById("postID").value;
+  let isCreate = postid == null || postid == "";
+
   ptitle = document.getElementById("ptitle").value;
   pimage = document.getElementById("pimage").files[0];
   pbody = document.getElementById("pbody").value;
@@ -111,19 +109,17 @@ function addPostBtn() {
   formdata1.append("title", ptitle);
   formdata1.append("image", pimage);
   formdata1.append("body", pbody);
-  let url=``
+  let url = ``;
   const token = localStorage.getItem("token");
   const headers = {
     "Content-Type": "multipart/form-data",
     authorization: `Bearer ${token}`,
   };
-  if(isCreate){
-        url=`${baseUrl}/posts`
-       
-  }else{
-    formdata1.append("_method","put")
-    url=`${baseUrl}/posts/${postid}`
-    
+  if (isCreate) {
+    url = `${baseUrl}/posts`;
+  } else {
+    formdata1.append("_method", "put");
+    url = `${baseUrl}/posts/${postid}`;
   }
   axios
     .post(url, formdata1, {
@@ -138,15 +134,8 @@ function addPostBtn() {
     .catch((error) => {
       showAlert(`${error.response.data.message}:(`, `danger`);
     });
-  
 }
 
+function userProfilePost() {}
 
-
-  
-function userProfilePost(){
-
-}
- 
-  /* </script>  */
-
+/* </script>  */
